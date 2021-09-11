@@ -1,25 +1,49 @@
-import logo from './logo.svg';
 import './App.css';
+import { useState } from 'react';
+import StudentTable from './StudentTable';
+import MyForm from './MyForm';
+import { generate } from "shortid";
 
 function App() {
+
+  const [rows, setRows] = useState([
+    {
+      id: "45",
+      firstName: "Hrishi",
+      lastName: "Mane",
+      email: "hrishi.mane26@gmail.com"
+    }
+  ]);
+
+  function deleteRow(id) {
+    console.log(id)
+    let newRows= rows.filter(function(element){ 
+        return element.id != id; 
+    });
+    setRows(newRows)
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div style={{ textAlign: "center", marginTop: 30 }}>
+      <h1 style={{color:"blue"}}>Student Form</h1>
+      <MyForm
+        onSubmit={data => {
+          setRows(currentRows => [
+            {
+              id: generate(),
+              ...data
+            },
+            ...currentRows
+          ]);
+        }}
+      />
+      <StudentTable
+        rows={rows}
+        deleteRow={deleteRow}
+      />
     </div>
   );
 }
 
 export default App;
+;
